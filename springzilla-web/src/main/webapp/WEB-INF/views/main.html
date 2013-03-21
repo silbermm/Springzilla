@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="templates/meta :: head">
+    </head>
+    <body> 
+        <div th:substituteby="templates/meta :: toolbar"></div>
+        <div th:substituteby="templates/meta :: subnav"></div>                
+        
+        <div class="main">                      
+            <div class="container" th:if="${error}">
+                <div th:include="templates/meta :: error"></div>
+            </div>
+            
+            <div th:include="templates/error :: content" data-bind="if: error"></div>
+            
+            <div class="container">
+                
+                <div th:include="templates/dashboard :: content" data-bind="if: isDashboard"> </div>
+                <div th:include="templates/cloning :: content" data-bind="if: isCloning"> </div>
+                <div th:include="templates/settings :: content" data-bind="if: isSettings"> </div>
+                
+            </div>
+        </div>
+        
+        
+        <footer th:include="templates/meta :: footer"></footer>
+    </body>
+</html>
+<script th:src="@{/resources/js/springzilla.js}"></script>

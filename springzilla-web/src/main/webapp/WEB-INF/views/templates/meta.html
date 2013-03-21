@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head">
+        <meta charset="utf-8" />
+        <title th:text="${title}">Generic Page Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="Matt Silbernagel" />
+        <link href="#" th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link href="/springzilla/resources/css/font-awesome.min.css" th:href="@{/resources/css/font-awesome.min.css}" rel="stylesheet" />
+        <link href="#" th:href="@{/resources/css/springzilla.css}" rel="stylesheet" />      
+        <link href="/springzilla/resources/css/springzilla-responsive.css" th:href="@{/resources/css/springzilla-responsive.css}" rel="stylesheet" />   
+        <link href="/springzilla/resources/js/bootstrap-responsive.min.css" th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+        <script src="/springzilla/resources/js/jquery.min.js" th:src="@{/resources/js/jquery.min.js}" ></script>
+        <script src="/springzilla/resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+        <script src="/springzilla/resources/js/knockout.js" th:src="@{/resources/js/knockout.js}"></script>
+        <script src="/springzilla/resources/js/sammy.js" th:src="@{/resources/js/sammy.js}"></script>
+        <script src="/springzilla/resources/js/jquery.validate.min.js" th:src="@{/resources/js/jquery.validate.min.js}"></script>
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div th:fragment="toolbar">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="btn btn-navbar" 
+                           data-toggle="collapse"
+                           data-target=".nav-collapse"> 
+                            <span class="icon-bar"></span> 
+                            <span class="icon-bar"></span> 
+                            <span class="icon-bar"></span>
+                        </a> 
+                        <a class="brand" href="/#Dashboard" th:href="@{/#Dashboard}"> 
+                            Springzilla
+                        </a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+
+                            </ul>
+                            <ul class="nav pull-right">
+                                <li sec:authorize="hasRole('ROLE_USER')"><a name="username"><i class="icon-user icon-white"></i> 
+                                        <span sec:authentication="name">Username</span></a>
+                                </li>
+                                <li class="divider-vertical"></li>
+                                <li th:unless="${#authorization}">
+                                    <a href="/login" th:href="@{/login}">
+                                        <i class="icon-lock icon-white"></i>
+                                        <span th:text="#{application.toolbar.login}">Login</span>
+                                    </a>
+                                </li>
+                                <li sec:authorize="hasRole('ROLE_USER')">
+                                    <a href="/j_spring_security_logout" th:href="@{/j_spring_security_logout}">
+                                        <i class="icon-lock icon-white"></i>
+                                        <span th:text="#{application.toolbar.logout}">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:fragment="subnav">
+            <div class="subnavbar" sec:authorize="hasRole('ROLE_USER')">
+                <div class="subnavbar-inner">
+                    <div class="container">
+                        <ul class="mainnav" data-bind="foreach: navigation">
+                            <li data-bind="css: { active: name == $root.chosenNavId() },
+                                           click: $root.goToNav">
+                                <a>
+                                    <i data-bind="css: icon"></i>
+                                    <span data-bind="text:name"> Home </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>                                        
+            </div>                            
+        </div>
+                
+        <div th:fragment="error">
+                <div class="alert alert-error container" id="global-messages">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <span class="label label-important" th:text="#{application.error.title}"> </span> &nbsp;
+                    <p th:text="#{${errorMsgKey}}">Error Message</p>
+                </div>
+         </div>
+
+        <div id="footer" th:fragment="footer">
+            <hr />
+            <div class="container">
+                <p class="muted credit" th:utext="#{application.copyright}"> &copy; University of Cincinnati 2013 </p>
+            </div>
+        </div>
+    </body>
+</html>

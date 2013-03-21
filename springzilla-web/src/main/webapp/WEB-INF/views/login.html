@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="templates/meta :: head"></head>
+    <body> 
+        <div th:substituteby="templates/meta :: toolbar"></div>
+        <div class="row-fluid main" id="loginpage">	
+            
+            <div class="container" th:if="${error}">
+                <div th:include="templates/meta :: error"></div>
+            </div>
+            
+            <div class="container" >
+                <form method="post" th:action="@{/j_spring_security_check}" class="form-signin">
+                    <h2 th:text="#{application.login.signin}"> Please Sign In </h2>
+                    <input type="text" name="j_username" class="input-block-level" th:placeholder="#{application.login.placeholder.username}" placeholder="Username" />
+                    <input type="password" name="j_password" class="input-block-level" th:placeholder="#{application.login.placeholder.password}" placeholder="Password"/>	
+                    <label class="checkbox"> 
+                        <input type="checkbox" name="_spring_security_remember_me" th:text="#{application.login.rememberme}"> Remember Me </input>
+                    </label> 
+                    <button type="submit" class="btn btn-large btn-primary btn-block" th:text="#{application.login.button.signin}" >Sign In </button>
+                </form>
+            </div>
+        </div>
+
+        <footer th:include="templates/meta :: footer"></footer>
+    </body>
+</html>

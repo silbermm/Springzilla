@@ -1,0 +1,9 @@
+<div th:fragment="content">
+    <div class="container">
+        <div class="alert alert-error container" id="global-messages">
+            <button type="button" class="close" data-dismiss="alert" data-bind="click: $root.dismissError">&times;</button>
+            <span class="label label-important" data-bind="text:error().title" > </span> &nbsp;
+            <p data-bind="text:error().message"></p>
+        </div>
+    </div>
+</div>

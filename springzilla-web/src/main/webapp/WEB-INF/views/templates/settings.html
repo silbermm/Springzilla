@@ -1,0 +1,92 @@
+
+<div th:fragment="content">
+    <div class="row-fluid">
+
+        <div class="span6">
+            <div class="widget">
+                <div class="widget-header">
+                    <i class="icon-tasks"></i>
+                    <h3> Location Settings </h3>
+                </div>
+                <div class="widget-content">
+                    <div>
+                        <form class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="inputImageLocation">Image Location</label>
+                                <div class="controls">
+                                    <input type="text" id="inputImageLocation"  />
+                                    <span class="help-inline">Something may have gone wrong</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button class="btn btn-large btn-primary" data-bind="click: $root.locationSave, html: locationSaveText, enable: isLocationSaving">
+                                        <i class="icon-tasks"></i>
+                                        Save
+                                    </button> 
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="span6">
+            <div class="widget">
+                <div class="widget-header">
+                    <i class="icon-tasks"></i>
+                    <h3> Multi-Cast Settings </h3>
+                </div>
+                <div class="widget-content">
+                    <div>
+                        <form class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="mcastRdvAddr">Multicast Rendevous Address</label>
+                                <div class="controls">
+                                    <input type="text" id="mcastRdvAddr" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="mcastSendAddr"> Multicast Sender Address</label>
+                                <div class="controls">
+                                    <input type="text" id="mcastSendAddr" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="mcastTTL"> Multicast TTL</label>
+                                <div class="controls">
+                                    <input type="text" id="mcastTTL" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="mcastPort"> Multicast Port</label>
+                                <div class="controls">
+                                    <input type="text" id="mcastPort" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button class="btn btn-large btn-primary" data-bind="click: $root.multicastSave,
+                                                                                         html: multicastSaveText,
+                                                                                         enable: isMulticastSaving()">                                        
+                                        Save
+                                    </button> 
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
