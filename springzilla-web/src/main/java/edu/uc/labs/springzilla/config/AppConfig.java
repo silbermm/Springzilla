@@ -1,5 +1,8 @@
 package edu.uc.labs.springzilla.config;
 
+import com.typesafe.config.Config;
+import edu.uc.labs.springzilla.dao.MulticastDao;
+import edu.uc.labs.springzilla.dao.MulticastDaoImpl;
 import edu.uc.labs.springzilla.dao.SettingsDao;
 import edu.uc.labs.springzilla.dao.SettingsDaoImpl;
 import edu.uc.labs.springzilla.services.ClonezillaService;
@@ -13,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -45,10 +47,10 @@ public class AppConfig {
     @Bean
     public Properties getHibernateProperties() {
         Properties p = new Properties();
-        p.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        p.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        p.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
-        p.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        p.setProperty("hibernate.dialect", config.getString("hibernate.dialect"));
+        p.setProperty("hibernate.show_sql", config.getString("hibernate.show_sql"));
+        p.setProperty("hibernate.format_sql", config.getString("hibernate.format_sql"));
+        p.setProperty("hibernate.hbm2ddl.auto", config.getString("hibernate.hbm2ddl.auto"));
         return p;
     }
     
@@ -62,9 +64,11 @@ public class AppConfig {
         return new SettingsDaoImpl();
     }
     
-    @Autowired
-    private DataSource dataSource;
+    @Bean
+    public MulticastDao multicastDao(){
+        return new MulticastDaoImpl(config);
+    }
     
-    @Autowired
-    private Environment env;
+    @Autowired private DataSource dataSource;
+    @Autowired private Config config;
 }

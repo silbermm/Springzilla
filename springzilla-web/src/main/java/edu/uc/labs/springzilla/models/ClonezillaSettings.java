@@ -14,10 +14,7 @@ public class ClonezillaSettings implements Serializable {
     
     private Long id;
     private String imageLocation;
-    private int multicastPort;
-    private String multicastRdvAddr;
-    private String multicastSenderAddr;
-    private int multicastTTL;
+    
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,40 +35,6 @@ public class ClonezillaSettings implements Serializable {
         this.imageLocation = imageLocation;
     }
     
-    @Column
-    public int getMulticastPort() {
-        return multicastPort;
-    }
-
-    public void setMulticastPort(int multicastPort) {
-        this.multicastPort = multicastPort;
-    }
-
-    @Column
-    public String getMulticastRdvAddr() {
-        return multicastRdvAddr;
-    }
-
-    public void setMulticastRdvAddr(String multicastRdvAddr) {
-        this.multicastRdvAddr = multicastRdvAddr;
-    }
-
-    @Column
-    public String getMulticastSenderAddr() {
-        return multicastSenderAddr;
-    }
-
-    public void setMulticastSenderAddr(String multicastSenderAddr) {
-        this.multicastSenderAddr = multicastSenderAddr;
-    }
-
-    @Column
-    public int getMulticastTTL() {
-        return multicastTTL;
-    }
-
-    public void setMulticastTTL(int multicastTTL) {
-        this.multicastTTL = multicastTTL;
-    }
+   
     
 }

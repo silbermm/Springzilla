@@ -1,5 +1,6 @@
 package edu.uc.labs.springzilla.config;
 
+import com.typesafe.config.Config;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -22,10 +23,10 @@ public class AmqpDevConfig implements AmqpConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost(env.getProperty("rabbit.dev.host"));
-        connectionFactory.setVirtualHost(env.getProperty("rabbit.dev.vhost"));
-        connectionFactory.setUsername(env.getProperty("rabbit.dev.username"));
-        connectionFactory.setPassword(env.getProperty("rabbit.dev.password"));
+        connectionFactory.setHost(config.getString("rabbit.dev.host"));
+        connectionFactory.setVirtualHost(config.getString("rabbit.dev.vhost"));
+        connectionFactory.setUsername(config.getString("rabbit.dev.username"));
+        connectionFactory.setPassword(config.getString("rabbit.dev.password"));
         return connectionFactory;
     }
 
@@ -34,6 +35,7 @@ public class AmqpDevConfig implements AmqpConfig {
     public AmqpAdmin amqpAdmin() {
         RabbitAdmin ra = new RabbitAdmin(connectionFactory());
         ra.declareQueue(multicastQueue());
+        ra.declareQueue(multicastReplyQueue());
         return ra;
     }
     
@@ -48,10 +50,13 @@ public class AmqpDevConfig implements AmqpConfig {
     @Override
     @Bean
     public Queue multicastQueue() {
-        return new Queue(env.getProperty("rabbit.multicastQ"));
+        return new Queue(config.getString("rabbit.queue.multicast"));
     }
     
+    public Queue multicastReplyQueue() {
+        return new Queue(config.getString("rabbit.queue.multicastreply"));
+    }
     
-    @Autowired
-    private Environment env;
+    @Autowired private Config config;
+    @Autowired private Environment env;
 }
