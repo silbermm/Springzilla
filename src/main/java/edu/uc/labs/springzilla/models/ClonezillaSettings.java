@@ -13,8 +13,8 @@ import javax.persistence.Table;
 public class ClonezillaSettings implements Serializable {
     
     private Long id;
-    private String imageLocation;
-    
+    private String settingName;
+    private String settingValue;    
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,15 +26,22 @@ public class ClonezillaSettings implements Serializable {
         this.id = id;
     }
     
-    @Column
-    public String getImageLocation(){
-        return imageLocation;
+    @Column(name="name")
+    public String getSettingName(){
+        return settingName;
     }
     
-    public void setImageLocation(String imageLocation){
-        this.imageLocation = imageLocation;
+    public void setSettingName(String settingName){
+        this.settingName = settingName;
     }
     
-   
+    @Column(name="value")
+    public String getSettingValue(){
+        return settingValue;
+    }
     
+    public void setSettingValue(String settingValue){
+        this.settingValue = settingValue;
+    }
+          
 }

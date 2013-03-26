@@ -14,7 +14,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="inputImageLocation">Image Location</label>
                                 <div class="controls">
-                                    <input type="text" id="inputImageLocation"  />
+                                    <input type="text" id="inputImageLocation" data-bind="value: generalSettings.imageLocation" />
                                     <span class="help-inline">Something may have gone wrong</span>
                                 </div>
                             </div>
@@ -27,6 +27,7 @@
                                     </button> 
                                 </div>
                             </div>
+                            <input type="hidden" id="getGeneralUrl" th:value="@{/settings/general}" />
                         </form>
                     </div>
                 </div>
@@ -45,28 +46,28 @@
                             <div class="control-group">
                                 <label class="control-label" for="mcastRdvAddr">Multicast Rendevous Address</label>
                                 <div class="controls">
-                                    <input type="text" id="mcastRdvAddr" />
+                                    <input type="text" id="mcastRdvAddr" data-bind="value: mcastSettings.rdvAddress" />
                                 </div>
                             </div>
 
                             <div class="control-group">
                                 <label class="control-label" for="mcastSendAddr"> Multicast Sender Address</label>
                                 <div class="controls">
-                                    <input type="text" id="mcastSendAddr" />
+                                    <input type="text" id="mcastSendAddr" data-bind="value: mcastSettings.senderAddress" />
                                 </div>
                             </div>
 
                             <div class="control-group">
                                 <label class="control-label" for="mcastTTL"> Multicast TTL</label>
                                 <div class="controls">
-                                    <input type="text" id="mcastTTL" />
+                                    <input type="text" id="mcastTTL" data-bind="value: mcastSettings.multicastTTL" />
                                 </div>
                             </div>
 
                             <div class="control-group">
                                 <label class="control-label" for="mcastPort"> Multicast Port</label>
                                 <div class="controls">
-                                    <input type="text" id="mcastPort" />
+                                    <input type="text" id="mcastPort" data-bind="value: mcastSettings.multicastPort" />
                                 </div>
                             </div>
 
@@ -79,7 +80,7 @@
                                     </button> 
                                 </div>
                             </div>
-
+                            <input type="hidden" id="getMulticastUrl" th:value="@{/settings/multicast}" />
                         </form>
                     </div>
                 </div>

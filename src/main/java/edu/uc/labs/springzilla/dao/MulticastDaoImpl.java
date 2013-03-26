@@ -11,11 +11,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MulticastDaoImpl implements MulticastDao {
-
+    
     public MulticastDaoImpl(Config config) {
         this.config = config;
     }
-
+    
     @Override
     public void updateSettings(MulticastSettings settings) throws IOException {
         File drblOcs = new File(config.getString("file.multicastsettings"));
@@ -41,17 +41,19 @@ public class MulticastDaoImpl implements MulticastDao {
             } else if (line.matches(senderAddress.pattern())) {
                 Matcher matcher = senderAddress.matcher(line);
                 while (matcher.find()) {
-                    line = line.replaceAll(senderAddress.pattern(), senderReplacement + "\"--multicast-data-address " + settings.getSenderAddress() + "\"");
+                    if (senderReplacement.equals("") || senderReplacement == null) {
+                        line = line.replaceAll(senderAddress.pattern(), senderReplacementNull);
+                    } else {
+                        line = line.replaceAll(senderAddress.pattern(), senderReplacement + "\"--mcast-data-address " + settings.getSenderAddress() + "\"");
+                    }
                 }
             }
             newoutput += line + "\n";
         }
         reader.close();
         drblOcs.delete();
-       
-        //File tmp = File.createTempFile("drbl-ocs", ".tmp");
+        
         File tmp = new File(config.getString("file.multicastsettings"));
-        //System.out.println("temp file = " + tmp.getAbsolutePath());
         FileOutputStream fop = new FileOutputStream(tmp);
         if (!tmp.exists()) {
             tmp.createNewFile();
@@ -59,14 +61,9 @@ public class MulticastDaoImpl implements MulticastDao {
         byte[] contentInBytes = newoutput.getBytes();
         fop.write(contentInBytes);
         fop.flush();
-        fop.close();      
-        
-        // Now replace the old file with the new file
-        
-        //tmp.renameTo(new File(config.getString("file.multicastsettings")));
-        
+        fop.close();
     }
-
+    
     @Override
     public MulticastSettings getSettings() throws IOException {
         MulticastSettings ms = new MulticastSettings();
@@ -77,36 +74,40 @@ public class MulticastDaoImpl implements MulticastDao {
             if (line.matches(portPattern.pattern())) {
                 Matcher matcher = portPattern.matcher(line);
                 while (matcher.find()) {
-                    ms.setMulticastPort(matcher.group(1));
+                    ms.setMulticastPort(matcher.group(2));
                 }
             } else if (line.matches(ttlPattern.pattern())) {
                 Matcher matcher = ttlPattern.matcher(line);
                 while (matcher.find()) {
-                    ms.setMulticastTTL(matcher.group(1));
+                    if (matcher.group(3) == null) {
+                        ms.setMulticastTTL(matcher.group(2));
+                    } else {
+                        ms.setMulticastTTL(matcher.group(3));
+                    }
                 }
             } else if (line.matches(rdvAddress.pattern())) {
                 Matcher matcher = rdvAddress.matcher(line);
                 while (matcher.find()) {
-                    ms.setRdvAddress(matcher.group(1));
+                    ms.setRdvAddress(matcher.group(2));
                 }
             } else if (line.matches(senderAddress.pattern())) {
                 Matcher matcher = senderAddress.matcher(line);
                 while (matcher.find()) {
-                    ms.setSenderAddress(matcher.group(1));
+                    ms.setSenderAddress(matcher.group(2));
                 }
             }
         }
         reader.close();
         return ms;
     }
-        
     private final Config config;
-    private Pattern portPattern = Pattern.compile("MULTICAST_PORT=\"(\\d*)\"");
+    private Pattern portPattern = Pattern.compile("MULTICAST_PORT=\"((\\d*)|())\"");
     private String portReplacement = "MULTICAST_PORT=";
-    private Pattern ttlPattern = Pattern.compile("TIME_TO_LIVE_OPT=\"--ttl (\\d*)\"");
+    private Pattern ttlPattern = Pattern.compile("TIME_TO_LIVE_OPT=\"((--ttl (\\d*))|())\"");
     private String ttlReplacement = "TIME_TO_LIVE_OPT=";
-    private Pattern rdvAddress = Pattern.compile("MULTICAST_ALL_ADDR=\"([[\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+]*)\"");
+    private Pattern rdvAddress = Pattern.compile("MULTICAST_ALL_ADDR=\"((\\d+\\.\\d+\\.\\d+\\.\\d+)|())\"");
     private String rdvReplacement = "MULTICAST_ALL_ADDR=";
-    private Pattern senderAddress = Pattern.compile("udp_sender_extra_opt_default=\"--mcast-data-address ([\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)\"", Pattern.CASE_INSENSITIVE);
+    private Pattern senderAddress = Pattern.compile("udp_sender_extra_opt_default=\"(--mcast-data-address\\s([\\d]+\\.[\\d]+\\.[\\d]+\\.[\\d]+)|())\"", Pattern.CASE_INSENSITIVE);
+    private String senderReplacementNull = "udp_sender_extra_opt_default=\"()\"";
     private String senderReplacement = "udp_sender_extra_opt_default=";
 }

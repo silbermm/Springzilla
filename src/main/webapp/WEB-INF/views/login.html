@@ -11,7 +11,7 @@
             </div>
             
             <div class="container" >
-                <form method="post" th:action="@{/j_spring_security_check}" class="form-signin">
+                <form method="post"   onsubmit="return setSubmitUrl(this);" class="form-signin">
                     <h2 th:text="#{application.login.signin}"> Please Sign In </h2>
                     <input type="text" name="j_username" class="input-block-level" th:placeholder="#{application.login.placeholder.username}" placeholder="Username" />
                     <input type="password" name="j_password" class="input-block-level" th:placeholder="#{application.login.placeholder.password}" placeholder="Password"/>	
@@ -19,6 +19,7 @@
                         <input type="checkbox" name="_spring_security_remember_me" th:text="#{application.login.rememberme}"> Remember Me </input>
                     </label> 
                     <button type="submit" class="btn btn-large btn-primary btn-block" th:text="#{application.login.button.signin}" >Sign In </button>
+                    <input type="hidden" id="spring_url" value="" th:value="@{/j_spring_security_check}" />
                 </form>
             </div>
         </div>
@@ -26,3 +27,11 @@
         <footer th:include="templates/meta :: footer"></footer>
     </body>
 </html>
+<script>
+function setSubmitUrl(form){
+    var hash = unescape(self.document.location.hash.substring(1)) ;
+    var url = $("#spring_url");
+    form.action = url.val() + "#" + hash;
+    return true;
+}
+</script>

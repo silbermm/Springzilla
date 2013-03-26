@@ -8,11 +8,13 @@ public class SettingsDaoImpl extends AbstractDao<ClonezillaSettings> implements 
 
     @Override
     public boolean isSet(String settingName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ClonezillaSettings cs = (ClonezillaSettings) getSession().createQuery("from ClonezillaSettings where name=?").setParameter(0, settingName).uniqueResult();
+        return (cs != null);
     }
-    
-    
-    
 
-
+    @Override
+    public ClonezillaSettings getSettingByName(String settingName) {
+        return (ClonezillaSettings) getSession().createQuery("from ClonezillasSettings where name=?").setParameter(0, settingName).uniqueResult();        
+    }
+        
 }
