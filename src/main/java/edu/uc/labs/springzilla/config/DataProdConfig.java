@@ -1,21 +1,19 @@
 package edu.uc.labs.springzilla.config;
 
+import com.typesafe.config.Config;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.typsafe.
+
 
 @Configuration
 @Profile("production")
 public class DataProdConfig implements DataConfig{
 
-    @Autowired
-    private Config config;
+    @Autowired private Config config;
        
     
     @Override
@@ -26,7 +24,7 @@ public class DataProdConfig implements DataConfig{
         bs.setUrl(config.getString("jdbc.prod.url"));
         bs.setUsername(config.getString("jdbc.prod.username"));
         bs.setPassword(config.getString("jdbc.prod.password"));
-        bs.setMaxWait(config.getLong(env.getProperty("jdbc.prod.maxwait")));
+        bs.setMaxWait(config.getLong("jdbc.prod.maxwait"));
         return bs;
     }
 
