@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -26,7 +25,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ImportResource(value = { "/WEB-INF/applicationContext-security.xml" } )
 @Import(PropertyPlaceholderConfig.class)
-@PropertySource("classpath:hibernate.properties")
 public class AppConfig {
 
     private static final Logger log = Logger.getLogger(AppConfig.class);

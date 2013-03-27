@@ -7,9 +7,9 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd           
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+            
+    <beans:bean name="placeholderConfig" class="edu.uc.labs.springzilla.config.PropertyPlaceholderConfig" />
         
-    <context:property-placeholder location="classpath:ldap-security.properties" />
-    
     <sec:http pattern="/css/**" security="none" />
     <sec:http pattern="/login*" security="none" />
     <sec:http pattern="/s/**" security="none" />
@@ -28,35 +28,16 @@
     </sec:http>
 
     <sec:global-method-security pre-post-annotations="enabled" />
-    <beans:beans profile="dev">
+    
         <sec:authentication-manager>
             <sec:authentication-provider>
                 <sec:user-service>
-                    <sec:user name="silbermm" password="password" authorities="ROLE_USER,ROLE_SURVEY_CREATOR" />
+                    <sec:user name="silbermm" password="password" authorities="ROLE_USER,ROLE_CLONEZILLA_ADMIN" />
                     <sec:user name="student" password="password" authorities="ROLE_USER" />
                 </sec:user-service>
             </sec:authentication-provider>
         </sec:authentication-manager>
-    </beans:beans>
+   
 
-    <beans:beans profile="production">
-        <sec:authentication-manager alias="authenticationManager">
-            <sec:authentication-provider ref="surveyAuthenticationProvider">
-            </sec:authentication-provider>
-        </sec:authentication-manager>
-
-        <beans:bean id="surveyAuthenticationProvider"
-                            class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
-            <beans:constructor-arg value="uclabs.uc.edu" />
-            <beans:constructor-arg value="ldap://ctrl.uclabs.uc.edu:389" />
-            <beans:property name="authoritiesMapper" ref="grantedAuthoritiesMapper" />
-            <beans:property name="useAuthenticationRequestCredentials"
-                                        value="true" />
-            <beans:property name="convertSubErrorCodesToExceptions"
-                                        value="true" />
-        </beans:bean>
-
-        <beans:bean id="grantedAuthoritiesMapper"
-                            class="edu.uc.labs.springzilla.security.ActiveDirectoryGrantedAuthoritiesMapper" />
-    </beans:beans>
+   
 </beans:beans>
