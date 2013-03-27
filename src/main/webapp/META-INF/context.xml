@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Parameter name="config.file" value="/etc/springzilla/springzilla.conf"  override="false"/>
+  <Parameter name="spring.profiles.active" value="production" override="false" />
+</Context>

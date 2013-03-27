@@ -8,32 +8,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
-
+import org.typsafe.
 
 @Configuration
 @Profile("production")
-@PropertySource({"classpath:devDataSource.properties"})
 public class DataProdConfig implements DataConfig{
 
     @Autowired
-    private Environment env;
-    
-    @Bean
-    public PropertySourcesPlaceholderConfigurer properties() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-    
+    private Config config;
+       
     
     @Override
     @Bean(destroyMethod="close")
     public DataSource dataSource() {
         BasicDataSource bs = new BasicDataSource();
-        bs.setDriverClassName(env.getProperty("jdbc.prod.driverClassName"));
-        bs.setUrl(env.getProperty("jdbc.prod.url"));
-        bs.setUsername(env.getProperty("jdbc.prod.username"));
-        bs.setPassword(env.getProperty("jdbc.prod.password"));
-        bs.setMaxWait(Long.parseLong(env.getProperty("jdbc.prod.maxwait")));
+        bs.setDriverClassName(config.getString("jdbc.prod.driverClassName"));
+        bs.setUrl(config.getString("jdbc.prod.url"));
+        bs.setUsername(config.getString("jdbc.prod.username"));
+        bs.setPassword(config.getString("jdbc.prod.password"));
+        bs.setMaxWait(config.getLong(env.getProperty("jdbc.prod.maxwait")));
         return bs;
     }
 

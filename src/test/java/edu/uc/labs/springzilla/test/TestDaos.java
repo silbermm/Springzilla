@@ -30,7 +30,7 @@ public class TestDaos {
     
     
     private static final Logger log = Logger.getLogger(TestDaos.class);
-
+    
     @Test
     public void testMulticastDaoSet() {
         final String PORT = "2232";
@@ -74,4 +74,5 @@ public class TestDaos {
             Assert.fail(ex.getMessage());
         }
     }
+   
 }
