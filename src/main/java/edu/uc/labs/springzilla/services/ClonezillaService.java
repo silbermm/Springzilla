@@ -6,7 +6,6 @@ import edu.uc.labs.springzilla.dao.SettingsDao;
 import edu.uc.labs.springzilla.models.ClonezillaSettings;
 import edu.uc.labs.springzilla.models.MulticastSettings;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -14,7 +14,7 @@ public class SettingsDaoImpl extends AbstractDao<ClonezillaSettings> implements 
 
     @Override
     public ClonezillaSettings getSettingByName(String settingName) {
-        return (ClonezillaSettings) getSession().createQuery("from ClonezillasSettings where name=?").setParameter(0, settingName).uniqueResult();        
+        return (ClonezillaSettings) getSession().createQuery("from ClonezillaSettings where name=?").setParameter(0, settingName).uniqueResult();        
     }
         
 }

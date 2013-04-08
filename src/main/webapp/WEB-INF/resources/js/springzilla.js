@@ -128,7 +128,9 @@ function SpringzillaViewModel() {
         $.getJSON(generalUrl).done(function(data) {
             console.log(data);
             $.each( data, function( i, item ) {
-                console.log(item);
+                if(item.settingName == "imageLocation"){
+                    self.generalSettings.imageLocation(item.settingValue);
+                }
             });
         }).fail(function(jqxhr, textStatus, error){
             console.log("error: " + error + " " + jqxhr);

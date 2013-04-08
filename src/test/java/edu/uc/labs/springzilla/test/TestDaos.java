@@ -8,7 +8,6 @@ import edu.uc.labs.springzilla.dao.StatusDao;
 import edu.uc.labs.springzilla.json.OcsManager;
 import edu.uc.labs.springzilla.models.MulticastSettings;
 import java.io.IOException;
-import java.util.logging.Level;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -64,15 +63,15 @@ public class TestDaos {
         }
     }
     
-    @Test
-    public void testStatusDao() {
-        try {
-            OcsManager m = statusDao.getOcsStatus();
-            Assert.assertEquals("started", m.getStatus());
-            Assert.assertNotNull(m.getElapsedTime());
-        } catch (IOException ex) {
-            Assert.fail(ex.getMessage());
-        }
-    }
+    //@Test
+    //public void testStatusDao() {
+    //    try {
+    //        OcsManager m = statusDao.getOcsStatus();
+    //       Assert.assertEquals("started", m.getStatus());
+    //        Assert.assertNotNull(m.getElapsedTime());
+    //   } catch (IOException ex) {
+    //        Assert.fail(ex.getMessage());
+    //    }
+    //}
    
 }

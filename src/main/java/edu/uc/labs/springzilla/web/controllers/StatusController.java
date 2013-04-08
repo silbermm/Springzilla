@@ -17,6 +17,7 @@ public class StatusController {
         return null; 
     }
     
+    
     @Autowired ClonezillaService service;
 
 }
