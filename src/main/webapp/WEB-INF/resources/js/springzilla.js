@@ -58,7 +58,7 @@ function SpringzillaViewModel() {
 
     // General Settings
     self.generalSettings = {
-        imageLocation : ko.observable(),
+        imageLocation: ko.observable(),
     }
 
     self.isMulticastSaving = ko.computed(function() {
@@ -80,7 +80,7 @@ function SpringzillaViewModel() {
             contentType: "application/json",
             dataType: "json"
         }).done(function(msg) {
-            
+
         }).fail(function(jqXHR, textStatus) {
             self.error(new Error("Unable to save multicast settings: " + textStatus));
         }).always(function() {
@@ -90,25 +90,25 @@ function SpringzillaViewModel() {
     };
 
     self.locationSave = function() {
-        var generalUrl  = $("#getGeneralUrl").val();
+        var generalUrl = $("#getGeneralUrl").val();
         self.locationSaveText("<i class='icon-refresh icon-spin'></i> Saving");
         $.ajax({
-           type: "PUT",
-           url : generalUrl,
-           data : ko.toJSON(self.generalSettings),
-           contentType: "application/json",
-           dataType: "json"
+            type: "PUT",
+            url: generalUrl,
+            data: ko.toJSON(self.generalSettings),
+            contentType: "application/json",
+            dataType: "json"
         }).fail(function(jqXHR, textStatus) {
             self.error(new Error("Unable to save general settings: " + textStatus));
             self.loadGeneralSettingsData();
-        }).always(function(){
-           self.locationSaveText(saveText);
+        }).always(function() {
+            self.locationSaveText(saveText);
         });
     };
 
     self.loadMcastSettingsData = function() {
         var multicastUrl = $("#getMulticastUrl").val();
-        
+
         // Get Multicast Settings
         $.getJSON(multicastUrl).done(function(data) {
             self.mcastSettings.multicastPort(data.multicastPort);
@@ -121,23 +121,55 @@ function SpringzillaViewModel() {
             self.error(new Error("ERROR", "Unable to get Multicast Settings: " + error));
         });
     };
-    
+
     self.loadGeneralSettingsData = function() {
-        var generalUrl   = $("#getGeneralUrl").val();
+        var generalUrl = $("#getGeneralUrl").val();
         // Get General Settings
         $.getJSON(generalUrl).done(function(data) {
             console.log(data);
-            $.each( data, function( i, item ) {
-                if(item.settingName == "imageLocation"){
+            $.each(data, function(i, item) {
+                if (item.settingName == "imageLocation") {
                     self.generalSettings.imageLocation(item.settingValue);
                 }
             });
-        }).fail(function(jqxhr, textStatus, error){
+        }).fail(function(jqxhr, textStatus, error) {
             console.log("error: " + error + " " + jqxhr);
             self.error(new Error("ERROR", "Unable to get General Settings: " + error));
         });
     };
+    /****** END SETTINGS PAGE ********/
+
+
     /********************************/
+    /******* CLONING PAGE ***********/
+    /********************************/
+    self.imageList = ko.observableArray();
+
+
+    self.loadImagesData = function() {
+        var imagesUrl = $("#getImagesUrl").val();
+        $.getJSON(imagesUrl).done(function(data) {
+            console.log(data);
+            $.each(data, function(i, item) {
+                console.log("adding " + item + " to array");
+                self.imageList.push(item);
+            });
+        }).fail(function(jqxhr, textStatus, error) {
+            console.log("error: " + error + " " + jqxhr);
+            self.error(new Error("ERROR", "Unable to get the Image locations, is your image location set?"));
+        });
+    };
+
+    self.stopDownloadSession = function() {
+
+    }
+
+    self.startDownloadSession = function() {
+
+    }
+
+
+    /***** END CLONING PAGE *********/
 
 
     // Client-side routes    
@@ -149,6 +181,9 @@ function SpringzillaViewModel() {
                 case "Settings":
                     self.loadMcastSettingsData();
                     self.loadGeneralSettingsData();
+                    break;
+                case "Cloning":
+                    self.loadImagesData();
                     break;
                 default:
                     // do nothing

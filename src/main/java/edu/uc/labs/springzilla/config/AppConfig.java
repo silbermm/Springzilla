@@ -1,12 +1,7 @@
 package edu.uc.labs.springzilla.config;
 
 import com.typesafe.config.Config;
-import edu.uc.labs.springzilla.dao.MulticastDao;
-import edu.uc.labs.springzilla.dao.MulticastDaoImpl;
-import edu.uc.labs.springzilla.dao.SettingsDao;
-import edu.uc.labs.springzilla.dao.SettingsDaoImpl;
-import edu.uc.labs.springzilla.dao.StatusDao;
-import edu.uc.labs.springzilla.dao.StatusDaoImpl;
+import edu.uc.labs.springzilla.dao.*;
 import edu.uc.labs.springzilla.services.ClonezillaService;
 import java.util.Properties;
 import javax.sql.DataSource;
@@ -74,6 +69,11 @@ public class AppConfig {
     @Bean
     public StatusDao statusDao(){
         return new StatusDaoImpl();
+    }
+
+    @Bean
+    public ImageDao imageDao(){
+      return new ImageDaoImpl();
     }
     
     @Autowired private DataSource dataSource;

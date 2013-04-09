@@ -3,6 +3,7 @@ package edu.uc.labs.springzilla.test;
 import edu.uc.labs.springzilla.config.AppConfig;
 import edu.uc.labs.springzilla.config.DataDevConfig;
 import edu.uc.labs.springzilla.config.PropertyPlaceholderConfig;
+import edu.uc.labs.springzilla.dao.ImageDao;
 import edu.uc.labs.springzilla.dao.MulticastDao;
 import edu.uc.labs.springzilla.dao.StatusDao;
 import edu.uc.labs.springzilla.json.OcsManager;
@@ -24,12 +25,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ActiveProfiles("dev")
 public class TestDaos {
 
-    @Autowired private MulticastDao multicastDao;
-    @Autowired private StatusDao statusDao;
-    
-    
+    @Autowired
+    private MulticastDao multicastDao;
+    @Autowired
+    private StatusDao statusDao;
+    @Autowired
+    private ImageDao imageDao;
     private static final Logger log = Logger.getLogger(TestDaos.class);
-    
+
     @Test
     public void testMulticastDaoSet() {
         final String PORT = "2232";
@@ -62,7 +65,20 @@ public class TestDaos {
             Assert.fail();
         }
     }
-    
+
+    @Test
+    public void testImages() {
+        try {
+            String[] images = imageDao.getImages("/home/partimag");
+            for (String s : images) {
+                log.debug(s);
+            }
+            Assert.assertTrue(images.length > 0);
+        } catch (RuntimeException e) {
+            log.error(e);
+            Assert.fail();
+        }
+    }
     //@Test
     //public void testStatusDao() {
     //    try {
@@ -73,5 +89,4 @@ public class TestDaos {
     //        Assert.fail(ex.getMessage());
     //    }
     //}
-   
 }
