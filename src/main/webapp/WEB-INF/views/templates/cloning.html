@@ -5,63 +5,125 @@
         <div class="span6">
             <div class="widget">
                 <div class="widget-header">
-                    <i class="icon-tasks"></i>
-                    <h3>Start a Multicast Restore Session </h3>
+                    <i class="icon-download"></i>
+                    <h3>Start a Restore Session </h3>
                 </div>
                 <div class="widget-content">
-                    <div>
-                        <button class="btn btn-large btn-primary"
-                                data-bind="click: $root.stopDownloadSession,
-                                enable: $root.isSessionRunning"> Stop Session </button>
-                        <a href="#startSessionModal" 
-                           class="btn btn-large btn-primary" 
-                           role="button"
-                           data-toggle="modal"> 
-                            Start a New Session 
-                        </a>
+
+		 <div id="restoreFormError" class="alert alert-error">
+		   <button type="button" class="close" data-dismiss="alert">&times;</button>
+		   <h4>Error!</h4>
+		   <ul></ul>	
+		 </div>
+	
+	         <form class="form-horizontal" id="restoreForm" method="POST" action="">
+
+               <div class="control-group">
+                    <label class="control-label" for="restoreOptions">Restore Type: </label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" 
+				   name="restoreOptions" 
+				   value="restoreDisk" 
+				   data-bind="checked: restoreForm.imageType" /> Restore Disk
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" 
+				   name="restoreOptions" 
+			           value="restorePart" 
+				   data-bind="checked: restoreForm.imageType" /> Restore Partition
+                        </label>
+			<span class="help-block"></span>
                     </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="imageName">Image to Restore: </label>
+                    <div class="controls">
+                        <select name="imageName" 
+				data-bind="options:images,optionsCaption:restoreCaption,value:restoreForm.image"></select>
+                   	<span class="help-block"></span> 
+		    </div>    
+                </div>
+	
+		<div class="control-group">
+		  <label class="control-label"> Network Protocol: </label>
+		  <div class="controls">
+		    <label class="radio inline">
+		      <input type="radio" 
+			     name="restoreProtocol" 
+			     value="multicast" data-bind="checked: restoreForm.imageProtocol" /> Multicast
+		    </label> 
+		    <label class="radio inline">
+		      <input type="radio" 
+			     name="restoreProtocol" 
+	 	  	     value="broadcast" data-bind="checked: restoreForm.imageProtocol" /> Broadcast
+		    </label> 
+ 		    <label class="radio inline">
+		      <input type="radio" 
+			     name="restoreProtocol" 
+			     value="unicast" data-bind="checked: restoreForm.imageProtocol" /> Unicast
+		    </label>
+		    <span class="help-block"></span>
+	          </div>	
+		</div>
+		
+		<div class="control-group">
+		  <label class="control-label" for="numberOfClients"> Number of Clients: </label>
+		  <div class="controls">
+		    <input type="text" name="numberOfClients" 
+			   class="span2 required" minlength="1" 
+			   data-bind="value: restoreForm.numberOfClients" />
+		     <span class="help-block"></span> 
+                   </div>
+		</div>
+		
+		<div class="control-group">
+		  <label class="control-label" for="maxTimeToWait"> Max Wait Time (in seconds): </label>
+		  <div class="controls">
+		    <input type="text" name="maxTimeToWait" 
+			   class="span2 required" minlength="2" 
+			   data-bind="value : restoreForm.maxWaitTime" />  
+		    <span class="help-block"></span>
+		  </div>	
+		</div>
+	 	
+                
+                <input type="hidden" id="getImagesUrl" th:value="@{/clone/getImages}" />
+		<div class="form-actions">
+		  <button class="btn btn-large btn-primary" 
+			  type="submit" 
+			  style="float:right"
+			  data-bind="html: restoreButton,enable:isRestoreStarting"> 
+			Start Session 
+		  </button>	
+		</div> 
+	</form>		                      
                 </div>
             </div>
         </div>
 
+	<div class="span6">
+	  <div class="widget">
+	    <div class="widget-header">
+	      <i class="icon-upload"></i>
+	      <h3> Start a Upload Session </h3>
+	    </div>
+	    <div class="widget-content">
+	      <div>
+	        <a href="#startUploadSessionModal"
+	           class="btn btn-large btn-primary"
+		   roles="button"
+	           data-toggle="modal">
+		     Start a New Session
+		</a>
+              </div>
+	    </div>
+	  </div>
+	</div>
 
-    </div>
 
-    <div id="startSessionModal" class="modal hide fade" 
-         tabindex="-1" role="dialog" aria-labelledby="startSessionModal" aria-hidden="true">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3>Create Session</h3> 
-        </div>
-        <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="control-group">
-                    <label class="control-label" for="restoreType">Restore Type: </label>
-                    <div class="controls">
-                        <label class="radio inline">
-                            <input type="radio" name="restoreOptions" id="restoreDisk" value="restoreDisk" /> Restore Disk
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="restoreOptions" id="restorePart" value="restorePart" /> Restore Part
-                        </label>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="restoreType">Image to Restore: </label>
-                    <div class="controls">
-                        <select data-bind="options: imageList, optionsCaption: 'Select an image...'"></select>
-                    </div>    
-                </div>
-                
-                <input type="hidden" id="getImagesUrl" th:value="@{/clone/getImages}" />
-            </form>	
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn">Cancel</a>
-            <a href="#" class="btn btn-primary">Start</a>
-        </div>
-    </div>
-
+    </div> 
 </div>
 
 

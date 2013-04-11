@@ -143,31 +143,60 @@ function SpringzillaViewModel() {
     /********************************/
     /******* CLONING PAGE ***********/
     /********************************/
-    self.imageList = ko.observableArray();
+    self.restoreCaption = 'Select an Image...';  
+    
+    self.restoreButtonText = "Start Session";
+    self.restoreButtonActive = "<i class='icon-refresh icon-spin'></i> Starting";
 
+    self.images = ko.observableArray();
+    self.restoreButton = ko.observable();
+    self.restoreButton(self.restoreButtonText);
+    self.restoreForm = {
+        image : ko.observable(),
+	imageProtocol : ko.observable(),
+	imageType : ko.observable(),
+        numberOfClients : ko.observable(),
+	maxWaitTime : ko.observable() 		
+    };
+
+    self.restoreForm.imageType("restoreDisk");
+    self.restoreForm.imageProtocol("multicast");
+
+    self.isRestoreStarting = ko.computed(function() {
+        return (self.restoreButton() == self.restoreButtonText);
+    }, this); 
+
+    self.submitRestoreForm = function() {
+      console.log("in the restore form function");
+      self.restoreButton(self.restoreButtonActive);
+      var restoreUrl = $("#restoreUrl").val(); 
+      $.ajax({
+            type: "POST",
+            url: restoreUrl,
+            data: ko.toJSON(self.restoreForm),
+            contentType: "application/json",
+            dataType: "json"
+        }).fail(function(jqXHR, textStatus) {
+            self.error(new Error("Unable to start the restore session: " + textStatus));
+        }).always(function() {
+            self.restoreButton(self.restoreButtonText);
+        }).done(function(data) {
+            alert("Dont posting data");	
+	}) 
+    }
 
     self.loadImagesData = function() {
+	self.images.removeAll();
         var imagesUrl = $("#getImagesUrl").val();
         $.getJSON(imagesUrl).done(function(data) {
-            console.log(data);
             $.each(data, function(i, item) {
                 console.log("adding " + item + " to array");
-                self.imageList.push(item);
+                self.images.push(item);
             });
         }).fail(function(jqxhr, textStatus, error) {
-            console.log("error: " + error + " " + jqxhr);
             self.error(new Error("ERROR", "Unable to get the Image locations, is your image location set?"));
         });
     };
-
-    self.stopDownloadSession = function() {
-
-    }
-
-    self.startDownloadSession = function() {
-
-    }
-
 
     /***** END CLONING PAGE *********/
 
@@ -206,4 +235,58 @@ function Error(title, message) {
     this.message = message;
 }
 
-ko.applyBindings(new SpringzillaViewModel());
+var springModel = new SpringzillaViewModel();
+ko.applyBindings(springModel);
+$("#restoreForm").validate({
+	rules: {
+    	  restoreOptions: {
+            required: true,
+    	  },
+    	  imageName: {
+            required: true,
+    	  },
+    	  restoreProtocol: "required",
+	  numberOfClients: {
+	    required: true,
+	    number: true,
+          },
+	  maxTimeToWait: {
+	    required: true,
+	    number: true,
+	  }, 
+
+	},
+	messages: {
+    	  restoreProtocol: "You must choose a network protocol",
+          imageName: {
+            required: "You must choose an image to restore from",
+    	  },
+    	  restoreOptions: {
+            required: "You must choose to image a partition or disk.",
+          },
+	  numberOfClients: {
+	    required: "Enter the number of computers",
+	    number: "A number is required"
+	  }, 
+	  maxTimeToWait: {
+	    required: "Enter a time to wait",
+	    number: "A number is required",
+	  },
+	},
+	submitHandler: function(form) {
+   	  springModel.submitRestoreForm
+        },
+	highlight: function (element, errorClass, validClass) {
+          $(element).closest('.control-group').removeClass('success').addClass('error');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).closest('.control-group').removeClass('error').addClass('success');
+        },
+	success: function (label) {
+          $(label).closest('form').find('.valid').removeClass("invalid");
+        },
+        errorPlacement: function (error, element) {
+          element.closest('.control-group').find('.help-block').html(error.text());
+        }
+      }); 
+

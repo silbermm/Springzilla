@@ -24,6 +24,7 @@ public class CloningController {
     @ExceptionHandler(ImageListingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void handleImageListingException(){
+        
     }
     
     @Autowired ClonezillaService service;

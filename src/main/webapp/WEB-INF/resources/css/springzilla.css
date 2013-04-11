@@ -85,6 +85,11 @@ body {
     padding-bottom: 2em;    
 }
 
+#restoreFormError {
+  display:none;
+}
+
+
 /***********
 LOGIN FORM
 ************/
