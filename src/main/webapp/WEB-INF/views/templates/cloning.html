@@ -1,129 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+  </title>
+</head>
 
-<div th:fragment="content">
+<body>
+  <div th:fragment="content">
     <div class="row-fluid">
+      <div class="span6">
+        <div class="widget">
+          <div class="widget-header">
+            <h3>Start a Restore Session</h3>
+          </div>
 
-        <div class="span6">
-            <div class="widget">
-                <div class="widget-header">
-                    <i class="icon-download"></i>
-                    <h3>Start a Restore Session </h3>
-                </div>
-                <div class="widget-content">
 
-		 <div id="restoreFormError" class="alert alert-error">
-		   <button type="button" class="close" data-dismiss="alert">&times;</button>
-		   <h4>Error!</h4>
-		   <ul></ul>	
-		 </div>
-	
-	         <form class="form-horizontal" id="restoreForm" method="POST" action="">
-
-               <div class="control-group">
-                    <label class="control-label" for="restoreOptions">Restore Type: </label>
-                    <div class="controls">
-                        <label class="radio inline">
-                            <input type="radio" 
-				   name="restoreOptions" 
-				   value="restoreDisk" 
-				   data-bind="checked: restoreForm.imageType" /> Restore Disk
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" 
-				   name="restoreOptions" 
-			           value="restorePart" 
-				   data-bind="checked: restoreForm.imageType" /> Restore Partition
-                        </label>
-			<span class="help-block"></span>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="imageName">Image to Restore: </label>
-                    <div class="controls">
-                        <select name="imageName" 
-				data-bind="options:images,optionsCaption:restoreCaption,value:restoreForm.image"></select>
-                   	<span class="help-block"></span> 
-		    </div>    
-                </div>
-	
-		<div class="control-group">
-		  <label class="control-label"> Network Protocol: </label>
-		  <div class="controls">
-		    <label class="radio inline">
-		      <input type="radio" 
-			     name="restoreProtocol" 
-			     value="multicast" data-bind="checked: restoreForm.imageProtocol" /> Multicast
-		    </label> 
-		    <label class="radio inline">
-		      <input type="radio" 
-			     name="restoreProtocol" 
-	 	  	     value="broadcast" data-bind="checked: restoreForm.imageProtocol" /> Broadcast
-		    </label> 
- 		    <label class="radio inline">
-		      <input type="radio" 
-			     name="restoreProtocol" 
-			     value="unicast" data-bind="checked: restoreForm.imageProtocol" /> Unicast
-		    </label>
-		    <span class="help-block"></span>
-	          </div>	
-		</div>
-		
-		<div class="control-group">
-		  <label class="control-label" for="numberOfClients"> Number of Clients: </label>
-		  <div class="controls">
-		    <input type="text" name="numberOfClients" 
-			   class="span2 required" minlength="1" 
-			   data-bind="value: restoreForm.numberOfClients" />
-		     <span class="help-block"></span> 
-                   </div>
-		</div>
-		
-		<div class="control-group">
-		  <label class="control-label" for="maxTimeToWait"> Max Wait Time (in seconds): </label>
-		  <div class="controls">
-		    <input type="text" name="maxTimeToWait" 
-			   class="span2 required" minlength="2" 
-			   data-bind="value : restoreForm.maxWaitTime" />  
-		    <span class="help-block"></span>
-		  </div>	
-		</div>
-	 	
-                
-                <input type="hidden" id="getImagesUrl" th:value="@{/clone/getImages}" />
-		<div class="form-actions">
-		  <button class="btn btn-large btn-primary" 
-			  type="submit" 
-			  style="float:right"
-			  data-bind="html: restoreButton,enable:isRestoreStarting"> 
-			Start Session 
-		  </button>	
-		</div> 
-	</form>		                      
-                </div>
+          <div class="widget-content">
+            <div id="restoreFormError" class="alert alert-error">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h4>Error!</h4>
             </div>
-        </div>
 
-	<div class="span6">
-	  <div class="widget">
-	    <div class="widget-header">
-	      <i class="icon-upload"></i>
-	      <h3> Start a Upload Session </h3>
-	    </div>
-	    <div class="widget-content">
-	      <div>
-	        <a href="#startUploadSessionModal"
-	           class="btn btn-large btn-primary"
-		   roles="button"
-	           data-toggle="modal">
-		     Start a New Session
-		</a>
+
+            <form class="form-horizontal" id="restoreForm" method="post" action="" name="restoreForm">
+              <div class="control-group">
+                <label class="control-label" for="restoreOptions">Restore Type:</label>
+                <div class="controls">
+                  <label class="radio inline"><input type="radio" name="restoreOptions" value="restoreDisk" data-bind="checked: restoreForm.imageType" /> Restore Disk</label> <label class="radio inline"><input type="radio" name="restoreOptions" value="restorePart" data-bind="checked: restoreForm.imageType" /> Restore Partition</label>
+                </div>
               </div>
-	    </div>
-	  </div>
-	</div>
 
 
-    </div> 
-</div>
+              <div class="control-group">
+                <label class="control-label" for="imageName">Image to Restore:</label>
+                <div class="controls">
+                  <select name="imageName" data-bind="options:images,optionsCaption:restoreCaption,value:restoreForm.image">
+                    </select>
+                </div>
+              </div>
 
 
+              <div class="control-group">
+                <label class="control-label">Network Protocol:</label>
+
+                <div class="controls">
+                  <label class="radio inline"><input type="radio" name="restoreProtocol" value="multicast" data-bind="checked: restoreForm.imageProtocol" /> Multicast</label> <label class="radio inline"><input type="radio" name="restoreProtocol" value="broadcast" data-bind="checked: restoreForm.imageProtocol" /> Broadcast</label> <label class="radio inline"><input type="radio" name="restoreProtocol" value="unicast" data-bind="checked: restoreForm.imageProtocol" /> Unicast</label>
+                </div>
+              </div>
+
+
+              <div class="control-group">
+                <label class="control-label" for="numberOfClients">Number of Clients:</label>
+
+                <div class="controls">
+                  <input type="text" name="numberOfClients" class="span2 required" minlength="1" data-bind="value: restoreForm.numberOfClients" />
+                </div>
+              </div>
+
+
+              <div class="control-group">
+                <label class="control-label" for="maxTimeToWait">Max Wait Time (in seconds):</label>
+
+                <div class="controls">
+                  <input type="text" name="maxTimeToWait" class="span2 required" minlength="2" data-bind="value : restoreForm.maxWaitTime" />
+                </div>
+              </div>
+              <input type="hidden" id="getImagesUrl" th:value="@{/clone/getImages}" />
+							<input type="hidden" id="getRestoreUrl" th:value="@{/clone/restore}" />
+
+              <div class="form-actions">
+                <button class="btn btn-large btn-primary" type="submit" style="float:right" data-bind="html: restoreButton,enable:isRestoreStarting,click: submitRestoreForm">Start Session</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="span6">
+        <div class="widget">
+          <div class="widget-header">
+            <h3>Start a Upload Session</h3>
+          </div>
+
+
+          <div class="widget-content">
+            <div>
+              <a href="#startUploadSessionModal" class="btn btn-large btn-primary" roles="button" data-toggle="modal">Start a New Session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

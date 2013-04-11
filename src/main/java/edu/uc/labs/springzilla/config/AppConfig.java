@@ -75,6 +75,11 @@ public class AppConfig {
     public ImageDao imageDao(){
       return new ImageDaoImpl();
     }
+
+		@Bean
+		public DrblDao drblDao(){
+			return new DrblDao();
+		}
     
     @Autowired private DataSource dataSource;
     @Autowired private Config config;
